@@ -1,5 +1,5 @@
 {
-  "name": "java_stacktrace",
+  "name": "haystack",
   "rules": {
     "stacktrace": {
       "type": "REPEAT1",

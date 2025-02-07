@@ -1,5 +1,5 @@
 module.exports = grammar({
-  name: 'java_stacktrace',
+  name: 'haystack',
 
   rules: {
     // The root of the parse tree
