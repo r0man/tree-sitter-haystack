@@ -1,74 +1,87 @@
 module.exports = grammar({
-  name: 'stacktrace_bnf',
+  name: 'java_stacktrace',
 
   rules: {
-    stacktrace: $ => seq(optional($.whitespace), $.exception,
-                         optional($.causes), optional($.garbage)),
+    // The root of the parse tree
+    stacktrace: $ => repeat1($.exception_entry),
 
-    garbage: $ => /[ \t\n\r.#]+/,
-
-    exception: $ => seq(
-      $.type,
-      '::', $.whitespace,
-      $.message,
-      optional(seq($.whitespace, $.data)),
-      $.newline,
-      $.trace,
+    // Represents the main exception entry
+    exception_entry: $ => seq(
+      $.exception_header,
+      $.stack_frames,
+      optional($.caused_by)
     ),
 
-    type: $ => $.class,
+    // Represents a 'Caused by' nested exception
+    caused_by: $ => seq(
+      'Caused by: ',
+      $.exception_header,
+      $.stack_frames,
+      optional($.caused_by) // Recursive for multiple nested causes
+    ),
 
-    message: $ => /\./,
+    // Header containing exception type and message
+    exception_header: $ => seq(
+      field('type', $.exception_type),
+      ': ',
+      field('message', $.exception_message)
+    ),
 
-    data: $ => seq('{', /\./, '}',),
+    // Exception type (e.g., java.lang.NullPointerException)
+    exception_type: $ => /[a-zA-Z0-9_.$]+/,
 
-    causes: $ => optional(seq($.newline, $.cause, $.causes)),
+    // Exception message (e.g., Something went wrong)
+    exception_message: $ => /[^\n]+/,
 
-    cause: $ => seq($.caused_by, $.exception, $.newline,
-                    $.cause_more),
+    // One or more stack frames
+    stack_frames: $ => repeat1($.stack_frame),
 
-    cause_more: $ => seq($.whitespace, '..', '..', '..', $.whitespace,
-                         $.number, $.whitespace, $.more),
+    // Single stack frame
+    stack_frame: $ => choice(
+      $.stack_frame_normal,
+      $.stack_frame_unknown_source,
+      $.stack_frame_native_method
+    ),
 
-    trace: $ => seq($.frame, optional($.frames)),
+    // Normal stack frame with file name and optional line number
+    stack_frame_normal: $ => seq(
+      /\s*at /,
+      field('method', $.method_name),
+      '(',
+      field('file', $.file_name),
+      optional(seq(':', field('line', $.line_number))),
+      ')'
+    ),
 
-    frames: $ => optional(seq($.newline, $.frame, $.frames)),
+    // Stack frame with "Unknown Source"
+    stack_frame_unknown_source: $ => seq(
+      /\s*at /,
+      field('method', $.method_name),
+      '(',
+      'Unknown Source',
+      ')'
+    ),
 
-    frame: $ => seq($.whitespace, $.at, $.whitespace, $.call),
+    // Stack frame with "Native Method"
+    stack_frame_native_method: $ => seq(
+      /\s*at /,
+      field('method', $.method_name),
+      '(',
+      'Native Method',
+      ')'
+    ),
 
-    call: $ => seq($.class, '.', $.method, '(', $.file, '::',
-                   $.number, ')'),
+    // Fully qualified method name (e.g., com.example.MyClass.method)
+    method_name: $ => /[a-zA-Z0-9_.<>$\-]+(?:\.[a-zA-Z0-9_$<>]+)*/,
 
-    caused_by: $ => 'Caused by: ',
+    // File name (e.g., MyClass.java)
+    file_name: $ => /[A-Za-z0-9_./$\-<>]+\.java/,
 
-    class: $ => seq($.simple_name, repeat(seq('.', $.simple_name))),
+    // Line number (e.g., 10)
+    line_number: $ => /\d+/,
+  },
 
-    file: $ => seq($.simple_name, '.', $.simple_name),
-
-    method: $ => $.simple_name,
-
-    more: $ => 'more',
-
-    whitespace: $ => /[\t\f\v ]+/,
-
-    lbrace: $ => '{',
-
-    rbrace: $ => '}',
-
-    digit: $ => /[0-9]/,
-
-    dot: $ => '.',
-
-    double_colon: $ => ':',
-
-    newline: $ => /[\r\n]/,
-
-    number: $ => seq(optional('-'), repeat($.digit)),
-
-    lparen: $ => '(',
-
-    rparen: $ => ')',
-
-    simple_name: $ => /[a-zA-Z0-9_$/-]+/,
-  }
+  extras: $ => [
+    /\s/, // Allows for whitespace between tokens
+  ],
 });
