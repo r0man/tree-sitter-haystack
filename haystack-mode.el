@@ -30,15 +30,47 @@
 
 ;;; Code:
 
+(require 'cider-stacktrace)
+(require 'treesit)
+
+(add-to-list 'treesit-extra-load-path "/home/roman/.guix-profile/lib/tree-sitter")
+
+(defvar haystack-font-lock-feature-list
+  '((method_name)
+    (file_name)
+    (line_number)
+    (exception_type)
+    (exception_message)))
+
+(defvar haystack-font-lock-rules
+  '(
+    :language haystack
+    :override t
+    :feature exception_type
+    ((exception_type) @cider-stacktrace-error-class-face)
+
+    :language haystack
+    :override t
+    :feature exception_message
+    ((exception_message) @cider-stacktrace-fn-face)
+
+    :language haystack
+    :override t
+    :feature line_number
+    ((line_number) @font-lock-bracket-face)
+
+    :language haystack
+    :override t
+    :feature method_name
+    ((method_name) @cider-stacktrace-fn-face)))
+
 (defun haystack-setup ()
   "Setup treesit for html-ts-mode."
-  ;; (setq-local treesit-font-lock-settings
-  ;;              (apply #'treesit-font-lock-rules
-  ;;                   html-ts-font-lock-rules)))
-  ;; ;; This handles indentation -- again, more on that below.
-  ;; (setq-local treesit-simple-indent-rules html-ts-indent-rules)
-  ;; ... everything else we talk about go here also ...
-  ;; End with this
+  (setq-local treesit-font-lock-feature-list
+              haystack-font-lock-feature-list)
+  (setq-local treesit-font-lock-settings
+              (apply #'treesit-font-lock-rules
+                     haystack-font-lock-rules))
   (treesit-major-mode-setup))
 
 ;;;###autoload
