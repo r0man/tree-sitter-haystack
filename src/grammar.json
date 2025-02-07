@@ -1,0 +1,263 @@
+{
+  "name": "java_stacktrace",
+  "rules": {
+    "stacktrace": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "exception_entry"
+      }
+    },
+    "exception_entry": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "exception_header"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "stack_frames"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "caused_by"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "caused_by": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "Caused by: "
+        },
+        {
+          "type": "SYMBOL",
+          "name": "exception_header"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "stack_frames"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "caused_by"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "exception_header": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "exception_type"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ": "
+        },
+        {
+          "type": "FIELD",
+          "name": "message",
+          "content": {
+            "type": "SYMBOL",
+            "name": "exception_message"
+          }
+        }
+      ]
+    },
+    "exception_type": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9_.$]+"
+    },
+    "exception_message": {
+      "type": "PATTERN",
+      "value": "[^\\n]+"
+    },
+    "stack_frames": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "stack_frame"
+      }
+    },
+    "stack_frame": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "stack_frame_normal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "stack_frame_unknown_source"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "stack_frame_native_method"
+        }
+      ]
+    },
+    "stack_frame_normal": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "\\s*at "
+        },
+        {
+          "type": "FIELD",
+          "name": "method",
+          "content": {
+            "type": "SYMBOL",
+            "name": "method_name"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "FIELD",
+          "name": "file",
+          "content": {
+            "type": "SYMBOL",
+            "name": "file_name"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "line",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "line_number"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "stack_frame_unknown_source": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "\\s*at "
+        },
+        {
+          "type": "FIELD",
+          "name": "method",
+          "content": {
+            "type": "SYMBOL",
+            "name": "method_name"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "STRING",
+          "value": "Unknown Source"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "stack_frame_native_method": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "\\s*at "
+        },
+        {
+          "type": "FIELD",
+          "name": "method",
+          "content": {
+            "type": "SYMBOL",
+            "name": "method_name"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "STRING",
+          "value": "Native Method"
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "method_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9_.<>$\\-]+(?:\\.[a-zA-Z0-9_$<>]+)*"
+    },
+    "file_name": {
+      "type": "PATTERN",
+      "value": "[A-Za-z0-9_./$\\-<>]+\\.java"
+    },
+    "line_number": {
+      "type": "PATTERN",
+      "value": "\\d+"
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": []
+}
+

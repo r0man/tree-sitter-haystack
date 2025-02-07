@@ -1,0 +1,243 @@
+[
+  {
+    "type": "caused_by",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "caused_by",
+          "named": true
+        },
+        {
+          "type": "exception_header",
+          "named": true
+        },
+        {
+          "type": "stack_frames",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exception_entry",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "caused_by",
+          "named": true
+        },
+        {
+          "type": "exception_header",
+          "named": true
+        },
+        {
+          "type": "stack_frames",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "exception_header",
+    "named": true,
+    "fields": {
+      "message": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "exception_message",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "exception_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "stack_frame",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "stack_frame_native_method",
+          "named": true
+        },
+        {
+          "type": "stack_frame_normal",
+          "named": true
+        },
+        {
+          "type": "stack_frame_unknown_source",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "stack_frame_native_method",
+    "named": true,
+    "fields": {
+      "method": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "method_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "stack_frame_normal",
+    "named": true,
+    "fields": {
+      "file": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "file_name",
+            "named": true
+          }
+        ]
+      },
+      "line": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "line_number",
+            "named": true
+          }
+        ]
+      },
+      "method": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "method_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "stack_frame_unknown_source",
+    "named": true,
+    "fields": {
+      "method": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "method_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "stack_frames",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "stack_frame",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "stacktrace",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exception_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": ": ",
+    "named": false
+  },
+  {
+    "type": "Caused by: ",
+    "named": false
+  },
+  {
+    "type": "Native Method",
+    "named": false
+  },
+  {
+    "type": "Unknown Source",
+    "named": false
+  },
+  {
+    "type": "exception_message",
+    "named": true
+  },
+  {
+    "type": "exception_type",
+    "named": true
+  },
+  {
+    "type": "file_name",
+    "named": true
+  },
+  {
+    "type": "line_number",
+    "named": true
+  },
+  {
+    "type": "method_name",
+    "named": true
+  }
+]
