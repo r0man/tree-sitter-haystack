@@ -1,0 +1,9 @@
+java.lang.NullPointerException: Something went wrong
+    at com.example.MyClass.method(MyClass.java:10)
+    at com.example.OtherClass.otherMethod(OtherClass.java:20)
+Caused by: java.lang.IllegalArgumentException: Bad argument
+    at com.example.Service.serviceMethod(Service.java:30)
+    at com.example.Helper.help(Helper.java:50)
+Caused by: java.lang.RuntimeException: Runtime issue
+    at com.example.Worker.work(Worker.java:70)
+    at com.example.Manager.manage(Manager.java:90)
