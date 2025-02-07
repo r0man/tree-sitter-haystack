@@ -1,3 +1,7 @@
+=====================
+Something went wrong
+====================
+
 java.lang.NullPointerException: Something went wrong
     at com.example.MyClass.method(MyClass.java:10)
     at com.example.OtherClass.otherMethod(OtherClass.java:20)
@@ -7,3 +11,52 @@ Caused by: java.lang.IllegalArgumentException: Bad argument
 Caused by: java.lang.RuntimeException: Runtime issue
     at com.example.Worker.work(Worker.java:70)
     at com.example.Manager.manage(Manager.java:90)
+
+---
+
+(stacktrace
+  (exception_entry
+    (exception_header
+      (exception_type)
+      (exception_message))
+    (stack_frames
+      (stack_frame
+        (stack_frame_normal
+          (method_name)
+          (file_name)
+          (line_number)))
+      (stack_frame
+        (stack_frame_normal
+          (method_name)
+          (file_name)
+          (line_number))))
+    (caused_by
+      (exception_header
+        (exception_type)
+        (exception_message))
+      (stack_frames
+        (stack_frame
+          (stack_frame_normal
+            (method_name)
+            (file_name)
+            (line_number)))
+        (stack_frame
+          (stack_frame_normal
+            (method_name)
+            (file_name)
+            (line_number))))
+      (caused_by
+        (exception_header
+          (exception_type)
+          (exception_message))
+        (stack_frames
+          (stack_frame
+            (stack_frame_normal
+          (method_name)
+          (file_name)
+          (line_number)))
+      (stack_frame
+        (stack_frame_normal
+          (method_name)
+          (file_name)
+          (line_number))))))))
