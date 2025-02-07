@@ -14,7 +14,7 @@
      "haystack" "Haystack"
      "1w80b7xii494rf9b9msy7jbagxsqq25xxz5srhslw9h82b9qzywl"
      (git-version "0.0.1" revision commit)
-     #:repository-url "https://github.com/r0man/tree-sitter-haystack.git"
+     #:repository-url "https://github.com/r0man/tree-sitter-haystack"
      #:commit commit)))
 
 tree-sitter-haystack
