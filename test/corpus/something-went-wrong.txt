@@ -1,6 +1,6 @@
 =====================
 Something went wrong
-====================
+=====================
 
 java.lang.NullPointerException: Something went wrong
     at com.example.MyClass.method(MyClass.java:10)
